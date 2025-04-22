@@ -5,25 +5,34 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float _parkourDuration = 0.4f;
     [SerializeField] private float _speed;
     [SerializeField] private float _rotationSpeed;
     [SerializeField] private Animator _animator;
-    [SerializeField] private ParticleSystem _dashParticle;
     [SerializeField] private float _dashPower = 3;
+    [SerializeField] private float _parkourPower = 3;
     [SerializeField] private float _dashDuration = 0.2f;
     [SerializeField] private float _dashReloadSpeed = 1;
+    [SerializeField] private Transform _parkourCheckPoint;
+    [SerializeField] private LayerMask _parkourLayerMask;
+    private CapsuleCollider _capsuleCollider;
     private int _speedMultiply = 1;
     private bool _canDash = true;
     private Rigidbody _rb;
     private Vector2 _input;
     private Vector3 _direction;
+    private bool _canParkour;
+    private bool _isParkouring;
+    
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _capsuleCollider = GetComponent<CapsuleCollider>(); 
     }
     void Update()
     {
         GetInputs();
+        CheckParkourObstacles();
     }
     void FixedUpdate()
     {     
@@ -51,6 +60,11 @@ public class PlayerController : MonoBehaviour
             _direction = transform.InverseTransformDirection(_direction);
 
         }
+
+        if (Input.GetKey(KeyCode.Space) && _canParkour && !_isParkouring)
+        {
+            StartCoroutine(Parkouring());
+        }
         if (Input.GetKey(KeyCode.LeftShift) && _canDash)
         {
             Dash(moveDirection);
@@ -64,17 +78,44 @@ public class PlayerController : MonoBehaviour
         _rb.AddForce(dashDirection * _dashPower, ForceMode.Impulse);
         StartCoroutine(Dashing());
     }
+
+    private IEnumerator Parkouring()
+    {
+        _rb.linearVelocity = Vector3.zero;
+        _isParkouring = true;
+        _animator.SetTrigger("Vault");
+        _rb.useGravity = false;
+        print("Parkouring");
+        _capsuleCollider.isTrigger = true;
+        _speedMultiply = 0;
+        _rb.AddForce(transform.forward * _parkourPower, ForceMode.Impulse);
+        while (_canParkour)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        _capsuleCollider.isTrigger = false;
+        _rb.useGravity = true;
+        _speedMultiply = 1;
+        _isParkouring = false;
+    }
     IEnumerator Dashing()
     {
         _canDash = false;
         _animator.SetTrigger("Dash");
         _speedMultiply = 0;
-        _dashParticle.Play();
         yield return new WaitForSeconds(_dashDuration);
         _speedMultiply = 1;
         yield return new WaitForSeconds(_dashReloadSpeed);
         
         _canDash = true;
+    }
+    #endregion
+    #region Parkour
+    private void CheckParkourObstacles()
+    {
+        Collider[] _hitCollider = Physics.OverlapSphere(_parkourCheckPoint.position, 0.3f, _parkourLayerMask);
+        _canParkour = _hitCollider.Length > 0;
+        print(_canParkour);
     }
     #endregion
 }
