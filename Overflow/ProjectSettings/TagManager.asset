@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Door
+  - DoorParent
+  - Enemy
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -11,12 +15,12 @@ TagManager:
   - Parkour
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Door
+  - DoorParent
+  - Sword
+  - Enemy
+  - Bleed
+  - Player
   - 
   - 
   - 

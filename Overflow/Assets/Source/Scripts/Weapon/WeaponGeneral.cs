@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class WeaponGeneral : MonoBehaviour
 {
     [SerializeField] protected Animator _animator;
-    
+    [SerializeField] protected Transform _attackPoint;
     [SerializeField] protected float _damage;
     [SerializeField] protected float _timeBetweenAttacks;
     
