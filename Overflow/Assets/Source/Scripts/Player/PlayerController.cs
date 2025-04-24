@@ -83,16 +83,17 @@ public class PlayerController : MonoBehaviour
     {
         _rb.linearVelocity = Vector3.zero;
         _isParkouring = true;
-        _animator.SetTrigger("Vault");
         _rb.useGravity = false;
         print("Parkouring");
         _capsuleCollider.isTrigger = true;
         _speedMultiply = 0;
         _rb.AddForce(transform.forward * _parkourPower, ForceMode.Impulse);
+        _animator.SetBool("Vaulting", true);
         while (_canParkour)
         {
             yield return new WaitForEndOfFrame();
         }
+        _animator.SetBool("Vaulting", false);
         _capsuleCollider.isTrigger = false;
         _rb.useGravity = true;
         _speedMultiply = 1;
@@ -101,9 +102,10 @@ public class PlayerController : MonoBehaviour
     IEnumerator Dashing()
     {
         _canDash = false;
-        _animator.SetTrigger("Dash");
+        _animator.SetBool("Dashing", true);
         _speedMultiply = 0;
         yield return new WaitForSeconds(_dashDuration);
+        _animator.SetBool("Dashing", false);
         _speedMultiply = 1;
         yield return new WaitForSeconds(_dashReloadSpeed);
         

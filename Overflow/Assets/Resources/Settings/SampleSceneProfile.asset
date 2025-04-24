@@ -96,7 +96,7 @@ MonoBehaviour:
     m_Value: 0
   maximumHeight:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 7.3
   enableGround:
     m_OverrideState: 1
     m_Value: 1
@@ -114,10 +114,10 @@ MonoBehaviour:
     m_Value: 1
   anisotropy:
     m_OverrideState: 1
-    m_Value: 0.502
+    m_Value: 0
   scattering:
     m_OverrideState: 1
-    m_Value: 0.074
+    m_Value: 1
   tint:
     m_OverrideState: 1
     m_Value: {r: 1, g: 0.9103774, b: 0.9506634, a: 1}
