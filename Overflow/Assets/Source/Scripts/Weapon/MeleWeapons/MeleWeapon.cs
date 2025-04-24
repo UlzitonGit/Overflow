@@ -5,48 +5,63 @@ using UnityEngine;
 public class MeleWeapon : WeaponGeneral
 {
      [SerializeField] private float _attackingTime = 0.2f;
-     [SerializeField] private BoxCollider _hitCollider;
-     [SerializeField] private ParticleSystem _hitParticles;
+     [SerializeField] private Transform _hitPoint;
+     [SerializeField] private LayerMask _enemyLayerMask;
+     [SerializeField] private LayerMask _obstLayerMask;
+     [SerializeField] PlayerController _player;
+     private bool _isAttacking;
      private void Update()
      {
-          Inputs();
+          Attack();
+          if(_isAttacking) CheckHits();
      }
-
-     private void Inputs()
-     {
-          if (Input.GetMouseButton(0) && _isReadyForAttack)
-          {
-               Attack();
-          }
-     }
+     
      
 
      protected override void Attack()
      {
-          _animator.SetTrigger("Attack");
-          StartCoroutine(Reloading());
+          if (Input.GetMouseButton(0) && _isReadyForAttack)
+          {
+               _animator.SetTrigger("Attack");
+               StartCoroutine(Reloading(0.5f));
+          }
+          if (Input.GetMouseButton(1) && _isReadyForAttack)
+          {
+               _animator.SetTrigger("DashAttack");
+               StartCoroutine(Reloading(0));
+               _player.AttackDash();
+          }
      }
 
-     protected override IEnumerator Reloading()
+     protected override IEnumerator Reloading(float durationBeforeAttack)
      {
           _isReadyForAttack = false;
-          _hitCollider.enabled = true;
+          yield return new WaitForSeconds(_attackingTime * durationBeforeAttack);
+          _isAttacking = true;
           yield return new WaitForSeconds(_attackingTime);
-          _hitCollider.enabled = false;
+          _isAttacking = false;
           yield return new WaitForSeconds(_timeBetweenAttacks);
           _isReadyForAttack = true;
      }
 
-     private void OnTriggerEnter(Collider other)
+     private void CheckHits()
      {
-          if (other.CompareTag("Door"))
+          Collider[] _hitCollider = Physics.OverlapSphere(_hitPoint.position, 1, _enemyLayerMask);
+          if (_hitCollider.Length > 0)
           {
-               other.GetComponent<Door>().GetImpulse(_attackPoint.transform.forward);
+               foreach (var enemy in _hitCollider)
+               {
+                    enemy.GetComponent<EnemyHealth>().TakeDamage(_damage);
+               }
           }
-          if (other.CompareTag("Enemy"))
+          _hitCollider = Physics.OverlapSphere(_hitPoint.position, 1, _obstLayerMask);
+          if (_hitCollider.Length > 0)
           {
-               other.GetComponent<EnemyHealth>().TakeDamage(_damage);
-               _hitParticles.Play();
+               foreach (var obs in _hitCollider)
+               {
+                    obs.GetComponent<Door>().GetImpulse(_hitPoint.forward);
+               }
           }
      }
+    
 }

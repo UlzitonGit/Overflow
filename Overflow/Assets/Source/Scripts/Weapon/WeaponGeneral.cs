@@ -12,5 +12,5 @@ public abstract class WeaponGeneral : MonoBehaviour
     protected bool _isReadyForAttack = true;
     
     protected abstract void Attack();
-    protected abstract IEnumerator Reloading();
+    protected abstract IEnumerator Reloading(float durationBeforeAttack);
 }

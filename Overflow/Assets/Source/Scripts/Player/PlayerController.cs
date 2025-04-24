@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _dashPower = 3;
     [SerializeField] private float _parkourPower = 3;
     [SerializeField] private float _dashDuration = 0.2f;
+    [SerializeField] private float _dashAttackDuration = 1f;
+    [SerializeField] private float _dashAttackPower = 3;
     [SerializeField] private float _dashReloadSpeed = 1;
     [SerializeField] private Transform _parkourCheckPoint;
     [SerializeField] private LayerMask _parkourLayerMask;
@@ -111,6 +113,22 @@ public class PlayerController : MonoBehaviour
         
         _canDash = true;
     }
+    IEnumerator DashingAttack()
+    {
+        _canDash = false;
+        _speedMultiply = 0;
+        _rb.AddForce(transform.forward * _dashAttackPower, ForceMode.Impulse);
+        yield return new WaitForSeconds(_dashAttackDuration);
+        _speedMultiply = 1;
+        yield return new WaitForSeconds(_dashReloadSpeed);
+        
+        _canDash = true;
+    }
+    public void AttackDash()
+    {
+        StartCoroutine(DashingAttack());
+    }
+  
     #endregion
     #region Parkour
     private void CheckParkourObstacles()
