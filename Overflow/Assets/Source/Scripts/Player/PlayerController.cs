@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _direction;
     private bool _canParkour;
     private bool _isParkouring;
+    private bool _isDashing;
     
     void Start()
     {
@@ -63,11 +64,11 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (Input.GetKey(KeyCode.Space) && _canParkour && !_isParkouring)
+        if (Input.GetKey(KeyCode.Space) && _canParkour && !_isParkouring && !_isDashing)
         {
             StartCoroutine(Parkouring());
         }
-        if (Input.GetKey(KeyCode.LeftShift) && _canDash)
+        if (Input.GetKey(KeyCode.LeftShift) && _canDash && !_isParkouring)
         {
             Dash(moveDirection);
         }
@@ -106,11 +107,12 @@ public class PlayerController : MonoBehaviour
         _canDash = false;
         _animator.SetBool("Dashing", true);
         _speedMultiply = 0;
+        _isDashing = true;  
         yield return new WaitForSeconds(_dashDuration);
-        _animator.SetBool("Dashing", false);
         _speedMultiply = 1;
+        _isDashing = false;
+        _animator.SetBool("Dashing", false);
         yield return new WaitForSeconds(_dashReloadSpeed);
-        
         _canDash = true;
     }
     IEnumerator DashingAttack()
