@@ -137,7 +137,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _noise: 0
-    - _opacity: 0.77
+    - _opacity: 0.59
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
@@ -146,7 +146,7 @@ Material:
     - _MainTilling: {r: 3, g: 4, b: 0, a: 0}
     - _RippleSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _RippleTiling: {r: 0.3, g: 0.3, b: 0, a: 0}
-    - _Road: {r: 0.40258992, g: 0.7830189, b: 0.7708464, a: 0}
+    - _Road: {r: 0.69268423, g: 0.8087609, b: 0.8113208, a: 0}
     - _SmoothTiling: {r: 0, g: 0, b: 0, a: 0}
     - _SmoothingTiling: {r: 0.01, g: 0.01, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
