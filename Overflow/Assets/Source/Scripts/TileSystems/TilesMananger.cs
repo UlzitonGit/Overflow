@@ -5,8 +5,10 @@ public class TilesMananger : MonoBehaviour
 {
     [SerializeField] private GameObject[] _tiles;
     [SerializeField] private Transform _firsTileSpawnTransform;
-    [SerializeField] private int _tilesCount;
     [SerializeField] private NavMeshSurface _navMeshSurface;
+    [SerializeField] private GameObject _lastTile;
+    
+    [SerializeField] private int _tilesCount;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +20,7 @@ public class TilesMananger : MonoBehaviour
             currenTile.transform.parent = null;
         }
 
+        Instantiate(_lastTile, currenTile.NextTileSpawner.position, Quaternion.Euler(new Vector3(0, 180, 0)));
         _navMeshSurface.BuildNavMesh();
     }
     

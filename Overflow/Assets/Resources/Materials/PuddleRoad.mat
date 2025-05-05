@@ -118,7 +118,7 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _Flow: 0.05
-    - _FlowTiling: 202.72
+    - _FlowTiling: 202.57
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -136,7 +136,7 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _noise: 0
+    - _noise: 0.2
     - _opacity: 0.59
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

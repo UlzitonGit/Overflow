@@ -22,6 +22,9 @@ public class EnemyBullet : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            int dive = PlayerPrefs.GetInt("Dive");
+            dive++;
+            PlayerPrefs.SetInt("Dive", dive);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         if (other.CompareTag("Obstacle") || other.CompareTag("Door"))
