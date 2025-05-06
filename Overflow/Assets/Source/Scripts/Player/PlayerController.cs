@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IPlayable
 {
     [SerializeField] private float _parkourDuration = 0.4f;
     [SerializeField] private float _speed;
@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _dashReloadSpeed = 1;
     [SerializeField] private Transform _parkourCheckPoint;
     [SerializeField] private LayerMask _parkourLayerMask;
+    public PlayerController PlayerControllerBind { get; set; }
+    
+    private bool _isActive;
     private CapsuleCollider _capsuleCollider;
     private int _speedMultiply = 1;
     private bool _canDash = true;
@@ -26,19 +29,33 @@ public class PlayerController : MonoBehaviour
     private bool _canParkour;
     private bool _isParkouring;
     private bool _isDashing;
-    
-    void Start()
+
+    public void InitializePlayer()
     {
         _rb = GetComponent<Rigidbody>();
+        PlayerControllerBind = this;
         _capsuleCollider = GetComponent<CapsuleCollider>(); 
     }
+
+    Transform IPlayable.PlayerTransform()
+    {
+        return transform;
+    }
+
+    public void IsActive(bool isActive)
+    {
+        _isActive = isActive;
+    }
+    
     void Update()
     {
+        if(!_isActive) return;
         GetInputs();
         CheckParkourObstacles();
     }
     void FixedUpdate()
     {     
+        if(!_isActive) return;
         Moving();
     }
     #region Inputs

@@ -94,7 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68758a1a061dab74ea86712564154ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
   _durationBetweenAttacks: 1
   _rageDistance: 25
   IsDeath: 0
@@ -115,6 +114,7 @@ MonoBehaviour:
   _enemyBehaviour: {fileID: 6528522033402679081}
   _hitParticles: {fileID: 1730985015035531994}
   _animator: {fileID: 5635944398770065598}
+  _capsuleCollider: {fileID: 4538934140002112603}
 --- !u!1 &2424220272583771863
 GameObject:
   m_ObjectHideFlags: 0

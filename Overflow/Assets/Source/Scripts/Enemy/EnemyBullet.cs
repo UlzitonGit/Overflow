@@ -7,7 +7,7 @@ public class EnemyBullet : MonoBehaviour
     [SerializeField] private float _speed;
     private Rigidbody _rigidbody;
 
-    private void Start()
+    private void OnEnable()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }

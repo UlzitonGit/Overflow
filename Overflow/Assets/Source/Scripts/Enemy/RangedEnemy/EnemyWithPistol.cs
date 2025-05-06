@@ -2,14 +2,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class EnemyWithPistol : EnemyBehaviour
 {
     [SerializeField] private GameObject _bullet;
     [SerializeField] private Transform _bulletSpawn;
+    
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    private void OnEnable()
     {
-        _player = FindAnyObjectByType<PlayerController>().GetComponent<Transform>();
         _agent = GetComponent<NavMeshAgent>();
     }
 

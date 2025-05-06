@@ -1,14 +1,16 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class FinishStage : MonoBehaviour
 {
     private GameSessionMananger _gameSessionMananger;
 
-    private void Start()
+    [Inject]
+    private void Construct(GameSessionMananger gameSessionMananger)
     {
-        _gameSessionMananger =FindAnyObjectByType<GameSessionMananger>();
+        _gameSessionMananger = gameSessionMananger;
     }
 
     private void OnTriggerEnter(Collider other)
