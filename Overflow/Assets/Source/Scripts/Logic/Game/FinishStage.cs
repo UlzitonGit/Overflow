@@ -17,7 +17,7 @@ public class FinishStage : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            _gameSessionMananger.Stage++;
+            //_gameSessionMananger.Stage++;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             this.enabled = false;
         }

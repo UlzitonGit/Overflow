@@ -17,22 +17,23 @@ public class PlayerController : MonoBehaviour, IPlayable
     [SerializeField] private float _dashReloadSpeed = 1;
     [SerializeField] private Transform _parkourCheckPoint;
     [SerializeField] private LayerMask _parkourLayerMask;
+    [SerializeField] private LayerMask _playerParkourLayerMask;
+    [SerializeField] private LayerMask _playerLayerMask;
     public PlayerController PlayerControllerBind { get; set; }
-    
+    private CharacterController _characterController;
     private bool _isActive;
     private CapsuleCollider _capsuleCollider;
     private int _speedMultiply = 1;
     private bool _canDash = true;
-    private Rigidbody _rb;
     private Vector2 _input;
     private Vector3 _direction;
     private bool _canParkour;
     private bool _isParkouring;
     private bool _isDashing;
-
+    private bool _isDashingAttacking;
     public void InitializePlayer()
     {
-        _rb = GetComponent<Rigidbody>();
+        _characterController = GetComponent<CharacterController>();
         PlayerControllerBind = this;
         _capsuleCollider = GetComponent<CapsuleCollider>(); 
     }
@@ -68,9 +69,12 @@ public class PlayerController : MonoBehaviour, IPlayable
     #region Movement
     private void Moving()
     {
+        Vector3 moveDirection = new Vector3(_direction.x, -6, _direction.z);
+        if (_isDashingAttacking) _characterController.Move(transform.forward * _dashAttackPower  * Time.deltaTime);
+        if(_isDashing)  _characterController.Move(moveDirection * _dashPower * Time.deltaTime);
         if (_speedMultiply == 0) return;
-        Vector3 moveDirection = new Vector3(_direction.x * _speed, _rb.linearVelocity.y, _direction.z * _speed);
-        _rb.linearVelocity = moveDirection * _speedMultiply;
+        //_rb.linearVelocity = moveDirection * _speedMultiply;
+        _characterController.Move(moveDirection * _speed * Time.deltaTime);
         if (Physics.Raycast(Camera.allCameras[0].ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
         {
             Vector3 diff = hit.point - transform.position;
@@ -95,27 +99,25 @@ public class PlayerController : MonoBehaviour, IPlayable
     }
     private void Dash(Vector3 dashDirection)
     {
-        _rb.AddForce(dashDirection * _dashPower, ForceMode.Impulse);
         StartCoroutine(Dashing());
     }
 
     private IEnumerator Parkouring()
     {
-        _rb.linearVelocity = Vector3.zero;
         _isParkouring = true;
-        _rb.useGravity = false;
         print("Parkouring");
         _capsuleCollider.isTrigger = true;
         _speedMultiply = 0;
-        _rb.AddForce(transform.forward * _parkourPower, ForceMode.Impulse);
         _animator.SetBool("Vaulting", true);
+        gameObject.layer = LayerMask.NameToLayer("PlayerParkour");
         while (_canParkour)
         {
+            _characterController.Move(transform.forward  * _parkourPower * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
+        gameObject.layer = LayerMask.NameToLayer("Player");
         _animator.SetBool("Vaulting", false);
         _capsuleCollider.isTrigger = false;
-        _rb.useGravity = true;
         _speedMultiply = 1;
         _isParkouring = false;
     }
@@ -136,8 +138,9 @@ public class PlayerController : MonoBehaviour, IPlayable
     {
         _canDash = false;
         _speedMultiply = 0;
-        _rb.AddForce(transform.forward * _dashAttackPower, ForceMode.Impulse);
+        _isDashingAttacking = true;
         yield return new WaitForSeconds(_dashAttackDuration);
+        _isDashingAttacking = false;
         _speedMultiply = 1;
         yield return new WaitForSeconds(_dashReloadSpeed);
         

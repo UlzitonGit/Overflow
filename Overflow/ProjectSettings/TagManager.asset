@@ -22,8 +22,8 @@ TagManager:
   - Bleed
   - Player
   - PlayerArmature
-  - 
-  - 
+  - PlayerParkour
+  - NonPostProcess
   - 
   - 
   - 
