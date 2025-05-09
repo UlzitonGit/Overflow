@@ -18420,7 +18420,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8994353675459700104, guid: 3bb74db9407a4934688c43a22bd01599, type: 3}
       propertyPath: _dashAttackPower
-      value: 60
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8994353675459700104, guid: 3bb74db9407a4934688c43a22bd01599, type: 3}
       propertyPath: _dashAttackDuration

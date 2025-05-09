@@ -17,6 +17,7 @@ public class GameEntryPoint : MonoBehaviour
 
     private void Start()
     {
+        _sessionMananger.InitializeStageNumber();
         _tilesMananger.InitializeTiles();
         _stageLoader.InitializeStageCountdown();
     }

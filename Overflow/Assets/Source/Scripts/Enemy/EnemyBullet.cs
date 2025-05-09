@@ -25,6 +25,7 @@ public class EnemyBullet : MonoBehaviour
             int dive = PlayerPrefs.GetInt("Dive");
             dive++;
             PlayerPrefs.SetInt("Dive", dive);
+            PlayerPrefs.SetInt("Stage", 1);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         if (other.CompareTag("Obstacle") || other.CompareTag("Door"))

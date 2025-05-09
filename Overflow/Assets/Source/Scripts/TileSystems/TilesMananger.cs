@@ -10,13 +10,14 @@ public class TilesMananger : MonoBehaviour
     [SerializeField] private GameObject _lastTile;
     
     [SerializeField] private int _tilesCount;
-    
+    private GameSessionMananger _gameSessionMananger;
     private Transform _playerTransform;
     
     [Inject]
-    private void Construct(IPlayable player)
+    private void Construct(IPlayable player, GameSessionMananger gameSessionMananger)
     {
         _playerTransform = player.PlayerTransform();
+        _gameSessionMananger = gameSessionMananger;
         print(_playerTransform);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
