@@ -15,7 +15,7 @@ public class EnemyBullet : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Update()
     {
-        _rigidbody.MovePosition(transform.position + transform.forward * _speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(transform.position + transform.forward * _speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)

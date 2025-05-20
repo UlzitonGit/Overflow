@@ -53,12 +53,9 @@ public class PlayerController : MonoBehaviour, IPlayable
         if(!_isActive) return;
         GetInputs();
         CheckParkourObstacles();
-    }
-    void FixedUpdate()
-    {     
-        if(!_isActive) return;
         Moving();
     }
+  
     #region Inputs
     private void GetInputs()
     {
